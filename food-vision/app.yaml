@@ -1,2 +1,2 @@
-runtime: custom
-env: flex
+runtime: custom # chạy trên container được custom
+env: flex # môi trường được linh động điều chỉnh với thư viện được chỉ định (requirements.txt)
