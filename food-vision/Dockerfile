@@ -1,6 +1,5 @@
 FROM python:3.7
 
-## App engine stuff
 # Expose port you want your app on
 EXPOSE 8080
 

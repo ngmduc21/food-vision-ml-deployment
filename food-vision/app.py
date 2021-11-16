@@ -1,4 +1,3 @@
-### Script for CS329s ML Deployment Lec 
 import os
 import json
 import requests
@@ -7,16 +6,16 @@ import streamlit as st
 import tensorflow as tf
 from utils import load_and_prep_image, classes_and_models, update_logger, predict_json
 
-# Setup environment credentials (you'll need to change these)
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "nt114-ml-deploy-0548f8fef41b.json" # change for your GCP key
-PROJECT = "nt114-ml-deploy" # change for your GCP project
-REGION = "asia-southeast1" # change for your GCP region (where your model is hosted)
+# Add environment credentials
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "nt114-ml-deploy-0548f8fef41b.json" 
+PROJECT = "nt114-ml-deploy" 
+REGION = "asia-southeast1" 
 
-### Streamlit code (works as a straigtht-forward script) ###
+### Streamlit code  ###
 st.title("Website nhận diện thức ăn online")
 st.header("Đó là món ăn gì? thử ngay!")
 
-@st.cache # cache the function so predictions aren't always redone (Streamlit refreshes every click)
+@st.cache # đưa function vào cache để prediction không tự lặp lại (streamlit refresh sau mỗi lần click)
 def make_prediction(image, model, class_names):
     """
     Takes an image and uses model (a trained TensorFlow model) to make a
@@ -39,7 +38,7 @@ def make_prediction(image, model, class_names):
     pred_conf = tf.reduce_max(preds[0])
     return image, pred_class, pred_conf
 
-# Pick the model version
+# Chọn version của model
 choose_model = st.sidebar.selectbox(
     "Chọn mô hình bạn muốn sử dụng",
     ("Model 1 (10 food classes)", # original 10 classes
@@ -67,7 +66,6 @@ uploaded_file = st.file_uploader(label="Upload ảnh thức ăn",
                                  type=["png", "jpeg", "jpg"])
 
 # Setup session state to remember state of app so refresh isn't always needed
-# See: https://discuss.streamlit.io/t/the-button-inside-a-button-seems-to-reset-the-whole-app-why/1051/11 
 session_state = SessionState.get(pred_button=False)
 
 # Create logic for app flow
@@ -115,6 +113,3 @@ if session_state.pred_button:
                                 correct=False,
                                 user_label=session_state.correct_class))
 
-# TODO: code could be cleaned up to work with a main() function...
-# if __name__ == "__main__":
-#     main()
